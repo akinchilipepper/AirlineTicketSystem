@@ -1,6 +1,7 @@
 package operations;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Airport;
 import model.Flight;
 import model.Seat;
 import system.DBConnection;
@@ -17,6 +17,7 @@ public class SeatOperations {
 
     private final DBConnection conn = new DBConnection();
     private final Connection con = conn.connDb();
+    private PreparedStatement ps = null;
     private Statement st = null;
     private ResultSet rs = null;
     private final Flight flight;
@@ -25,6 +26,27 @@ public class SeatOperations {
         this.flight = flight;
     }
 
+    public boolean isSeatAvailable(String koltuknumarasi) {
+    	String query = "SELECT K.KOLTUKNUMARASI "
+    			+ "FROM "
+    			+ "BILETLER B "
+    			+ "JOIN "
+    			+ "KOLTUKLAR K ON K.ID = B.KOLTUKID "
+    			+ "WHERE KOLTUKNUMARASI = ?";
+    	try {
+    		ps = con.prepareStatement(query);
+    		ps.setString(1,koltuknumarasi);
+    		rs = ps.executeQuery();
+    		if(rs.next())
+    			return false;
+    		else
+    			return true;
+    	} catch(SQLException ex) {
+    		Logger.getLogger(SeatOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+    	}
+    }
+    
     public Seat[] getSeats() {
         String query = "SELECT ID, KOLTUKNUMARASI, KOLTUKTURU FROM KOLTUKLAR WHERE REZERVEDURUMU = 0";
         try {
@@ -43,42 +65,6 @@ public class SeatOperations {
             Seat[] seats = seatList.toArray(Seat[]::new);
 
             return seats;
-        } catch (SQLException ex) {
-            Logger.getLogger(SeatOperations.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
-    public Airport[] getAirports() {
-        String query = "SELECT "
-                + "H.ID, "
-                + "S.SEHIR, "
-                + "H.HAVAALANI, "
-                + "H.IATAKODU, "
-                + "K.KULLANIM "
-                + "FROM "
-                + "HAVAALANLARI H "
-                + "JOIN SEHIRLER S ON S.ID = H.SEHIRID"
-                + "JOIN KULLANIM K ON K.ID = H.KULLANIMID";
-        try {
-            ArrayList<Airport> airportList = new ArrayList<>();
-            st = con.createStatement();
-            rs = st.executeQuery(query);
-
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                String sehir = rs.getString(2);
-                String havaalani = rs.getString(3);
-                String iatakodu = rs.getString(4);
-                String kullanim = rs.getString(5);
-                Airport airport = new Airport(id, sehir, havaalani, iatakodu, kullanim);
-                airportList.add(airport);
-            }
-
-            Airport[] airports = airportList.toArray(Airport[]::new);
-
-            return airports;
-
         } catch (SQLException ex) {
             Logger.getLogger(SeatOperations.class.getName()).log(Level.SEVERE, null, ex);
             return null;

@@ -86,7 +86,7 @@ public class UserLoginGUI extends JFrame {
         emailField.setBackground(new Color(255, 255, 255));
         emailField.setForeground(new Color(0, 0, 0));
         emailField.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        emailField.setBounds(116, 167, 300, 30);
+        emailField.setBounds(116, 167, 300, 32);
         panelRight.add(emailField);
 
         passwordLabel = new JLabel("PAROLA");
@@ -100,14 +100,14 @@ public class UserLoginGUI extends JFrame {
         passwordField.setBackground(new Color(255, 255, 255));
         passwordField.setForeground(new Color(0, 0, 0));
         passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        passwordField.setBounds(116, 256, 300, 30);
+        passwordField.setBounds(116, 256, 300, 32);
         panelRight.add(passwordField);
 
         confirmButton = new JButton("GİRİŞ");
         confirmButton.setForeground(new Color(0, 0, 0));
         confirmButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
         confirmButton.setBackground(new Color(255, 255, 255));
-        confirmButton.setBounds(166, 340, 200, 50);
+        confirmButton.setBounds(153, 340, 225, 50);
 
         confirmButton.addActionListener((ActionEvent e) -> {
             String email = emailField.getText();
