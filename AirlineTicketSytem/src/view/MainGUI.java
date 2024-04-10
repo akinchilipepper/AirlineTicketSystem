@@ -14,6 +14,7 @@ import javax.swing.JButton;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ import model.Airport;
 
 import operations.AirportOperations;
 import operations.FlightOperations;
+import javax.swing.ImageIcon;
 
 public class MainGUI extends JFrame {
 
@@ -113,14 +115,14 @@ public class MainGUI extends JFrame {
         JLabel lblWelcome = new JLabel("Hoşgeldiniz");
         lblWelcome.setFont(new Font("Tahoma", Font.PLAIN, 22));
         lblWelcome.setForeground(new Color(255, 255, 255));
-        lblWelcome.setBounds(167, 198, 115, 30);
+        lblWelcome.setBounds(167, 202, 115, 30);
         panel_1.add(lblWelcome);
 
         JLabel lblUsername = new JLabel("Sayın, ");
         lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsername.setForeground(new Color(255, 255, 255));
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblUsername.setBounds(84, 238, 282, 22);
+        lblUsername.setBounds(84, 242, 282, 22);
         lblUsername.setText(lblUsername.getText() + user.getAd() + " " + user.getSoyad());
         panel_1.add(lblUsername);
 
@@ -236,6 +238,14 @@ public class MainGUI extends JFrame {
         layeredPane.setLayer(userInfoPane, 4);
 
         contentPane.add(panel_1);
+        
+        JLabel userIconLabel = new JLabel("");
+        ImageIcon originalIcon = new ImageIcon(UserLoginGUI.class.getResource("/images/User.png"));
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+        userIconLabel.setIcon(new ImageIcon(resizedImage));
+        userIconLabel.setBounds(162, 59, 125, 125);
+        panel_1.add(userIconLabel);
         contentPane.add(layeredPane);
         setContentPane(contentPane);
     }

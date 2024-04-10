@@ -161,14 +161,14 @@ public class UserLoginGUI extends JFrame {
         ImageIcon originalIcon = new ImageIcon(UserLoginGUI.class.getResource("/images/plane.png"));
 
         Image originalImage = originalIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        Image resizedImage = originalImage.getScaledInstance(225, 225, Image.SCALE_SMOOTH);
 
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
         JLabel imageLabel = new JLabel();
         imageLabel.setIcon(resizedIcon);
         imageLabel.setBackground(new Color(255, 255, 255));
-        imageLabel.setBounds(-25, 151, 500, 250);
+        imageLabel.setBounds(112, 164, 225, 225);
         panelLeft.add(imageLabel);
 
         JLabel registerLabel = new JLabel("Hesap Oluştur");
