@@ -15,18 +15,13 @@ import system.DBConnection;
 
 public class SeatOperations {
 
-    private final DBConnection conn = new DBConnection();
-    private final Connection con = conn.connDb();
-    private PreparedStatement ps = null;
-    private Statement st = null;
-    private ResultSet rs = null;
-    private final Flight flight;
+    private static final DBConnection conn = new DBConnection();
+    private static final Connection con = conn.connDb();
+    private static PreparedStatement ps = null;
+    private static Statement st = null;
+    private static ResultSet rs = null;
 
-    public SeatOperations(Flight flight) {
-        this.flight = flight;
-    }
-
-    public boolean isSeatAvailable(String koltuknumarasi) {
+    public static boolean isSeatAvailable(String koltuknumarasi) {
     	String query = "SELECT K.KOLTUKNUMARASI "
     			+ "FROM "
     			+ "BILETLER B "
@@ -47,7 +42,7 @@ public class SeatOperations {
     	}
     }
     
-    public Seat[] getSeats() {
+    public static Seat[] getSeats(Flight flight) {
         String query = "SELECT ID, KOLTUKNUMARASI, KOLTUKTURU FROM KOLTUKLAR WHERE REZERVEDURUMU = 0";
         try {
             ArrayList<Seat> seatList = new ArrayList<>();
@@ -58,7 +53,7 @@ public class SeatOperations {
                 int id = rs.getInt(1);
                 String koltuknumarasi = rs.getString(2);
                 String koltukturu = rs.getString(3);
-                Seat seat = new Seat(id, koltuknumarasi, koltukturu, this.flight);
+                Seat seat = new Seat(id, koltuknumarasi, koltukturu,flight);
                 seatList.add(seat);
             }
 

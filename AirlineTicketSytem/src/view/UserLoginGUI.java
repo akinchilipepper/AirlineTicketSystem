@@ -120,11 +120,10 @@ public class UserLoginGUI extends JFrame {
             } else if (password.equals("")) {
                 JOptionPane.showMessageDialog(null, "Parola alanı boş olamaz!");
             } else {
-                UserOperations userOperations = new UserOperations();
-                Boolean isLoginSuccesful = userOperations.login(email, password);
+                Boolean isLoginSuccesful = UserOperations.login(email, password);
                 if (isLoginSuccesful) {
                     JOptionPane.showMessageDialog(null, "Hoşgeldiniz");
-                    User user = userOperations.setUser(email);
+                    User user = UserOperations.setUser(email);
                     new MainGUI(user).setVisible(true);
                     dispose();
                 } else {

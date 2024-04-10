@@ -13,12 +13,12 @@ import system.DBConnection;
 
 public class AirportOperations {
 
-    private final DBConnection conn = new DBConnection();
-    private final Connection con = conn.connDb();
-    private Statement st = null;
-    private ResultSet rs = null;
+    private static final DBConnection conn = new DBConnection();
+    private static final Connection con = conn.connDb();
+    private static Statement st = null;
+    private static ResultSet rs = null;
 
-    public Airport[] getAirports() {
+    public static Airport[] getAirports() {
         String query = "SELECT "
                 + "H.ID, "
                 + "S.SEHIR, "

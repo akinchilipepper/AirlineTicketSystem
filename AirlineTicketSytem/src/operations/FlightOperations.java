@@ -13,12 +13,12 @@ import system.DBConnection;
 
 public class FlightOperations {
 
-    private final DBConnection conn = new DBConnection();
-    private final Connection con = conn.connDb();
-    private PreparedStatement ps;
-    private ResultSet rs;
+    private static final DBConnection conn = new DBConnection();
+    private static final Connection con = conn.connDb();
+    private static PreparedStatement ps;
+    private static ResultSet rs;
 
-    public boolean isFlightAvailable(String source, String arrival, String time) {
+    public static boolean isFlightAvailable(String source, String arrival, String time) {
         String sourceQuery = "SELECT ID FROM HAVAALANLARI WHERE HAVAALANI = ?";
         String arrivalQuery = "SELECT ID FROM HAVAALANLARI WHERE HAVAALANI = ?";
 
@@ -67,7 +67,7 @@ public class FlightOperations {
 
     }
 
-    public Flight[] getFlights(String source, String arrival, String time) {
+    public static Flight[] getFlights(String source, String arrival, String time) {
 
         String sourceQuery = "SELECT ID FROM HAVAALANLARI WHERE HAVAALANI = ?";
         String arrivalQuery = "SELECT ID FROM HAVAALANLARI WHERE HAVAALANI = ?";

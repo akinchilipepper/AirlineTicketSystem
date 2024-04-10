@@ -18,12 +18,12 @@ public class UserOperations {
 	private static final int PNR_LENGTH = 6;
 	private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static final Random random = new Random();
-	private final DBConnection conn = new DBConnection();
-	private Connection con = conn.connDb();
-	private PreparedStatement ps;
-	private ResultSet rs;
+	private static final DBConnection conn = new DBConnection();
+	private static Connection con = conn.connDb();
+	private static PreparedStatement ps;
+	private static ResultSet rs;
 
-	public boolean login(String email, String password) {
+	public static boolean login(String email, String password) {
 		String query = "SELECT * FROM YOLCULAR WHERE E_POSTA = ? AND PAROLA = ?";
 		try {
 			ps = con.prepareStatement(query);
@@ -37,7 +37,7 @@ public class UserOperations {
 		}
 	}
 
-	public boolean addUser(String ad, String soyad, String telno, String eposta, String cinsiyet, String dtarihi,
+	public static boolean addUser(String ad, String soyad, String telno, String eposta, String cinsiyet, String dtarihi,
 			String parola) {
 		String query = "INSERT INTO YOLCULAR" + "(AD, SOYAD, TELNO, E_POSTA, CINSIYET, DOGUMTARIHI, PAROLA)" + "VALUES"
 				+ "(?, ?, ?, ?, ?, ?, ?)";
@@ -63,7 +63,7 @@ public class UserOperations {
 		}
 	}
 
-	public User setUser(String email) {
+	public static User setUser(String email) {
 		String query = "SELECT * FROM YOLCULAR WHERE E_POSTA = ?";
 		try {
 			ps = con.prepareStatement(query);
@@ -91,10 +91,10 @@ public class UserOperations {
 		}
 	}
 
-	private static String generateRandomUniquePNR(Connection connection) throws SQLException {
+	private static String generateRandomUniquePNR() throws SQLException {
 		String pnr;
 		String sql = "SELECT COUNT(*) FROM BILETLER WHERE PNR = ?";
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+		try (PreparedStatement statement = con.prepareStatement(sql)) {
 			do {
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < PNR_LENGTH; i++) {
@@ -116,16 +116,16 @@ public class UserOperations {
 		}
 	}
 
-	public boolean ticketBooking(Flight flight, User user, Seat seat) {
+	public static boolean ticketBooking(Flight flight, User user, Seat seat) {
 		String findIdQuery = "SELECT ID FROM KOLTUKLAR WHERE KOLTUKNUMARASI = ?";
         String insertTicketQuery = "INSERT INTO BILETLER (YOLCUID, UCUSID, KOLTUKID, PNR)"
                 + "VALUES (?,?,?,?)";
         String setReservedSeat = "UPDATE KOLTUKLAR SET REZERVEDURUMU = 1 WHERE KOLTUKNUMARASI = ?";
         String pnr;
-        Boolean durum = new SeatOperations(flight).isSeatAvailable(seat.getKoltuknumarasi());
+        Boolean durum = SeatOperations.isSeatAvailable(seat.getKoltuknumarasi());
         if(durum) {
         	try {
-                pnr = UserOperations.generateRandomUniquePNR(this.con);
+                pnr = UserOperations.generateRandomUniquePNR();
             } catch (SQLException e) {
                 Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, e);
                 pnr = null;
@@ -160,7 +160,7 @@ public class UserOperations {
         }
     }
 
-	public boolean mailCheck(String eposta) {
+	public static boolean mailCheck(String eposta) {
 		String sorgu = "SELECT * FROM YOLCULAR WHERE E_POSTA = ?";
 		try {
 			ps = con.prepareStatement(sorgu);

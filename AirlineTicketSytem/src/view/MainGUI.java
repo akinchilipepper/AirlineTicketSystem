@@ -46,8 +46,6 @@ public class MainGUI extends JFrame {
     private JLayeredPane layeredPane = null;
     private final DateChooser chDate;
     private final JTextField txtDate;
-    private final AirportOperations airportOperations = new AirportOperations();
-    private FlightOperations flightOperations = new FlightOperations();
 
     public MainGUI(User user) {
         setResizable(false);
@@ -155,7 +153,7 @@ public class MainGUI extends JFrame {
         userInfoPane.setLayout(null);
         userInfoPane.setBackground(new Color(128, 255, 255));
 
-        Airport[] airports = airportOperations.getAirports();
+        Airport[] airports = AirportOperations.getAirports();
         String[] airportNames = new String[airports.length];
         for (int i = 0; i < airports.length; i++) {
             airportNames[i] = airports[i].getHavaalani();
@@ -219,10 +217,10 @@ public class MainGUI extends JFrame {
             String arrival = cboxArrival.getSelectedItem().toString();
             String time = txtDate.getText();
 
-            boolean isFlightFound = flightOperations.isFlightAvailable(source, arrival, time);
+            boolean isFlightFound = FlightOperations.isFlightAvailable(source, arrival, time);
 
             if (isFlightFound) {
-                Flight[] flights = flightOperations.getFlights(source, arrival, time);
+                Flight[] flights = FlightOperations.getFlights(source, arrival, time);
                 new FlightsPane(flights, user).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Aradığınız Kriterde Uçuş Bulunamadı");

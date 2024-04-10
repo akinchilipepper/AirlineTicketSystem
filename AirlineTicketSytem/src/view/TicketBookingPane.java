@@ -25,11 +25,8 @@ public class TicketBookingPane extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private final JPanel contentPane;
-    private Flight flight;
-    private final SeatOperations seatOperations = new SeatOperations(flight);
 
     public TicketBookingPane(Flight flight, User user) {
-        this.flight = flight;
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -119,7 +116,7 @@ public class TicketBookingPane extends JFrame {
         planeNameLabel.setText(planeNameLabel.getText() + " " + flight.getUcak());
         contentPane.add(planeNameLabel);
 
-        Seat[] seats = seatOperations.getSeats();
+        Seat[] seats = SeatOperations.getSeats(flight);
         String[] seatNumbers = new String[seats.length];
         for (int i = 0; i < seatNumbers.length; i++) {
             seatNumbers[i] = seats[i].getKoltuknumarasi() + "-" + seats[i].getKoltukturu();
@@ -133,10 +130,9 @@ public class TicketBookingPane extends JFrame {
 
         JButton ticketBookingButton = new JButton("BİLET AL");
         ticketBookingButton.addActionListener((ActionEvent e) -> {
-            UserOperations userOperations = new UserOperations();
             int selectedRow = cboxSeats.getSelectedIndex();
             Seat seat = seats[selectedRow];
-            boolean status = userOperations.ticketBooking(flight, user, seat);
+            boolean status = UserOperations.ticketBooking(flight, user, seat);
             if (status) {
                 JOptionPane.showMessageDialog(ticketBookingButton, "Bilet Alındı");
             } else {

@@ -47,7 +47,6 @@ public class UserRegisterGUI extends JFrame {
     private final ButtonGroup genderButtonGroup;
     private JRadioButton maleRadioButton;
     private JRadioButton femaleRadioButton;
-    private UserOperations userOperations = new UserOperations();
 
     public UserRegisterGUI() {
         setResizable(false);
@@ -194,12 +193,12 @@ public class UserRegisterGUI extends JFrame {
                 return;
             }
 
-            if (userOperations.mailCheck(mailField.getText())) {
+            if (UserOperations.mailCheck(mailField.getText())) {
                 JOptionPane.showMessageDialog(null, "Bu e-posta zaten kullanılıyor! Lütfen farklı bir e-posta deneyiniz");
                 return;
             }
 
-            boolean status = userOperations.addUser(nameField.getText(), surnameField.getText(), telNumberField.getText(),
+            boolean status = UserOperations.addUser(nameField.getText(), surnameField.getText(), telNumberField.getText(),
                     mailField.getText(), getGenderSelection(), birthdateField.getText(),
                     password);
             if (status) {
