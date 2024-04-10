@@ -6,5 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/akinc/Downloads/svgSalamander-1.1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/akinc/Downloads/flatlaf-extras-3.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/akinc/Downloads/flatlaf-3.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/akinc/Downloads/datechooser-swing-1.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/akinc/Downloads/mysql-connector-j-8.3.0/mysql-connector-j-8.3.0/mysql-connector-j-8.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
