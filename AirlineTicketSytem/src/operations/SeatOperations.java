@@ -42,6 +42,27 @@ public class SeatOperations {
     	}
     }
     
+    public static Seat getSeat(Flight flight, int koltukId) {
+    	String query = "SELECT ID, KOLTUKNUMARASI, KOLTUKTURU FROM KOLTUKLAR WHERE ID = ?";
+    	Seat seat = null;
+        try {
+            ps = con.prepareStatement(query);
+            ps.setInt(1, koltukId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String koltuknumarasi = rs.getString(2);
+                String koltukturu = rs.getString(3);
+                seat = new Seat(id, koltuknumarasi, koltukturu, flight);
+            }
+            return seat;
+        } catch (SQLException ex) {
+            Logger.getLogger(SeatOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+     
     public static Seat[] getSeats(Flight flight) {
         String query = "SELECT ID, KOLTUKNUMARASI, KOLTUKTURU FROM KOLTUKLAR WHERE REZERVEDURUMU = 0";
         try {

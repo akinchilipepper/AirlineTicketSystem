@@ -66,6 +66,60 @@ public class FlightOperations {
         }
 
     }
+    
+    public static Flight getFlight(int ucusid) {
+    	String query = "SELECT "
+                + "UC.ID, "
+                + "HAT.YÖN, "
+                + "UCAK.MODEL, "
+                + "H1.HAVAALANI, "
+                + "H2.HAVAALANI, "
+                + "UC.KALKISTARIHI, "
+                + "UC.VARISTARIHI,"
+                + "UC.KALKISZAMANI, "
+                + "UC.VARISZAMANI, "
+                + "D.UCUSDURUMU,"
+                + "UC.UCUSNO "
+                + "FROM "
+                + "UCUSLAR UC "
+                + "JOIN "
+                + "HATLAR HAT ON HAT.ID = UC.HATID "
+                + "JOIN "
+                + "UCAKLAR UCAK ON UCAK.ID = UC.UCAKID "
+                + "JOIN "
+                + "HAVAALANLARI H1 ON H1.ID = UC.KALKISYERIID "
+                + "JOIN "
+                + "HAVAALANLARI H2 ON H2.ID = UC.VARISYERIID "
+                + "JOIN "
+                + "DURUMLAR D ON D.ID = UC.DURUMUID "
+                + "WHERE "
+                + "UC.ID = ?";
+    	Flight flight = null;
+    	try {
+    		ps = con.prepareStatement(query);
+    		ps.setInt(1, ucusid);
+    		rs = ps.executeQuery();
+    		while(rs.next()) {
+    			int id = rs.getInt(1);
+                String hat = rs.getString(2);
+                String ucak = rs.getString(3);
+                String kalkisYeri = rs.getString(4);
+                String varisYeri = rs.getString(5);
+                String kalkisTarihi = rs.getString(6);
+                String varisTarihi = rs.getString(7);
+                String kalkisZamani = rs.getString(8);
+                String varisZamani = rs.getString(9);
+                String durum = rs.getString(10);
+                String ucusNo = rs.getString(11);
+
+                flight = new Flight(id, hat, ucak, kalkisYeri, varisYeri, kalkisTarihi, varisTarihi, kalkisZamani, varisZamani, durum, ucusNo);
+    		}
+    		return flight;
+    	} catch(SQLException ex) {
+            Logger.getLogger(FlightOperations.class.getName()).log(Level.SEVERE, null, ex);
+    		return null;
+    	}
+    }
 
     public static Flight[] getFlights(String source, String arrival, String time) {
 
@@ -74,6 +128,7 @@ public class FlightOperations {
 
         int sourceAirportID = -1;
         int arrivalAirportID = -1;
+        
         String query = "SELECT "
                 + "UC.ID, "
                 + "HAT.YÖN, "

@@ -39,6 +39,7 @@ public class FlightsPane extends JFrame {
         contentPane = new JPanel();
         contentPane.setBackground(new Color(38, 38, 38));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(null);
 
         Object[][] objects = new Object[flights.length][5];
 
@@ -67,7 +68,6 @@ public class FlightsPane extends JFrame {
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 17));
-        contentPane.setLayout(null);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(10, 127, 912, 416);

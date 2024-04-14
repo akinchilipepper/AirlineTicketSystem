@@ -94,7 +94,8 @@ public class UserOperations {
 	private static String generateRandomUniquePNR() throws SQLException {
 		String pnr;
 		String sql = "SELECT COUNT(*) FROM BILETLER WHERE PNR = ?";
-		try (PreparedStatement statement = con.prepareStatement(sql)) {
+		try {
+			ps = con.prepareStatement(sql); 
 			do {
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < PNR_LENGTH; i++) {
@@ -103,16 +104,18 @@ public class UserOperations {
 				}
 				pnr = sb.toString();
 
-				statement.setString(1, pnr);
-				try (ResultSet resultSet = statement.executeQuery()) {
-					if (resultSet.next()) {
-						int count = resultSet.getInt(1);
-						if (count == 0) {
-							return pnr;
-						}
+				ps.setString(1, pnr);
+				rs = ps.executeQuery(); 
+				if (rs.next()) {
+					int count = rs.getInt(1);
+					if (count == 0) {
+						return pnr;
 					}
 				}
 			} while (true);
+		}catch(SQLException ex){
+            Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
 		}
 	}
 

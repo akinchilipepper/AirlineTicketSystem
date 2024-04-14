@@ -16,6 +16,10 @@ public class Ticket {
         this.flight = flight;
         this.seat = seat;
     }
+    
+    public Ticket() {
+    	
+    }
 
     public int getId() {
         return id;

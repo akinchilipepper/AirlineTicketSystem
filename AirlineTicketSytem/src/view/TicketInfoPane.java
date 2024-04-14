@@ -4,30 +4,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JSeparator;
-import javax.swing.JComboBox;
 
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 
-import model.Flight;
-import model.Seat;
-import model.User;
-import operations.UserOperations;
-import operations.SeatOperations;
+import model.Ticket;
 import java.awt.GridLayout;
+import javax.swing.JButton;
 
-public class TicketBookingPane extends JFrame {
+public class TicketInfoPane extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
 
-    public TicketBookingPane(Flight flight, User user) {
+    public TicketInfoPane(Ticket ticket) {
+    	setTitle("Biletim");
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,79 +33,44 @@ public class TicketBookingPane extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel seatChoosingLabel = new JLabel("KOLTUK SEÇİMİ");
-        seatChoosingLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        seatChoosingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        seatChoosingLabel.setBounds(59, 312, 97, 19);
-        contentPane.add(seatChoosingLabel);
-
         JLabel flightInfoLabel = new JLabel("UÇUŞ DETAYLARI");
         flightInfoLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
         flightInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        flightInfoLabel.setBounds(294, 36, 143, 22);
+        flightInfoLabel.setBounds(294, 47, 143, 22);
         contentPane.add(flightInfoLabel);
-
-        Seat[] seats = SeatOperations.getSeats(flight);
-        String[] seatNumbers = new String[seats.length];
-        for (int i = 0; i < seatNumbers.length; i++) {
-            seatNumbers[i] = seats[i].getKoltuknumarasi() + "-" + seats[i].getKoltukturu();
-        }
-        JComboBox<String> cboxSeats = new JComboBox<>();
-        cboxSeats.setBackground(new Color(255, 255, 255));
-        cboxSeats.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        cboxSeats.setBounds(10, 342, 200, 30);
-        cboxSeats.setModel(new DefaultComboBoxModel<>(seatNumbers));
-        contentPane.add(cboxSeats);
-
-        JButton ticketBookingButton = new JButton("BİLET AL");
-        ticketBookingButton.addActionListener((ActionEvent e) -> {
-            int selectedRow = cboxSeats.getSelectedIndex();
-            Seat seat = seats[selectedRow];
-            boolean status = UserOperations.ticketBooking(flight, user, seat);
-            if (status) {
-                JOptionPane.showMessageDialog(ticketBookingButton, "Bilet Alındı");
-            } else {
-                JOptionPane.showMessageDialog(ticketBookingButton, "Bir Hata oluştu. Lütfen daha sonra tekrar deneyin");
-            }
-        });        
-        ticketBookingButton.setBackground(new Color(38, 38, 38));
-        ticketBookingButton.setForeground(new Color(255, 255, 255));
-        ticketBookingButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        ticketBookingButton.setBounds(522, 337, 200, 35);
-        contentPane.add(ticketBookingButton);
         
         JPanel panel = new JPanel();
-        panel.setBounds(0, 109, 732, 185);
+        panel.setBounds(0, 101, 732, 200);
         contentPane.add(panel);
-        panel.setLayout(new GridLayout(1, 0, 0, 0));
+        panel.setLayout(new GridLayout(0, 3, 0, 0));
         
         JPanel panel_1 = new JPanel();
         panel.add(panel_1);
         panel_1.setLayout(null);
         
-                JLabel originAirportLabel = new JLabel("");
-                originAirportLabel.setBounds(47, 85, 150, 20);
-                panel_1.add(originAirportLabel);
-                originAirportLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                originAirportLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                originAirportLabel.setText(flight.getKalkisyeri());
+                JLabel departureLabel = new JLabel("KALKIŞ");
+                departureLabel.setBounds(96, 20, 52, 19);
+                panel_1.add(departureLabel);
+                departureLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+                departureLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 
-                        JLabel departureLabel = new JLabel("KALKIŞ");
-                        departureLabel.setBounds(96, 20, 52, 19);
-                        panel_1.add(departureLabel);
-                        departureLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-                        departureLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                        JLabel originAirportLabel = new JLabel("");
+                        originAirportLabel.setBounds(47, 80, 150, 20);
+                        panel_1.add(originAirportLabel);
+                        originAirportLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                        originAirportLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+                        originAirportLabel.setText(ticket.getFlight().getKalkisyeri());
                         
                                 JLabel departureTimeLabel = new JLabel("");
-                                departureTimeLabel.setBounds(47, 115, 150, 20);
+                                departureTimeLabel.setBounds(47, 110, 150, 20);
                                 panel_1.add(departureTimeLabel);
                                 departureTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
                                 departureTimeLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                                departureTimeLabel.setText(flight.getKalkisTarihi() + " " + flight.getKalkisZamani());
+                                departureTimeLabel.setText(ticket.getFlight().getKalkisTarihi() + " " + ticket.getFlight().getKalkisZamani());
                                 
                                 JSeparator separator = new JSeparator();
-                                separator.setForeground(new Color(0, 0, 0));
                                 separator.setBackground(new Color(0, 0, 0));
+                                separator.setForeground(new Color(0, 0, 0));
                                 separator.setBounds(242, 0, 2, 200);
                                 panel_1.add(separator);
                                 separator.setOrientation(SwingConstants.VERTICAL);
@@ -128,25 +86,25 @@ public class TicketBookingPane extends JFrame {
                 arrivalLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
                 
                         JLabel arrivalAirportLabel = new JLabel("");
-                        arrivalAirportLabel.setBounds(47, 85, 150, 20);
+                        arrivalAirportLabel.setBounds(47, 80, 150, 20);
                         panel_2.add(arrivalAirportLabel);
                         arrivalAirportLabel.setHorizontalAlignment(SwingConstants.CENTER);
                         arrivalAirportLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                        arrivalAirportLabel.setText(flight.getVarisyeri());
+                        arrivalAirportLabel.setText(ticket.getFlight().getVarisyeri());
                         
                                 JLabel arrivalTimeLabel = new JLabel("");
-                                arrivalTimeLabel.setBounds(47, 115, 150, 20);
+                                arrivalTimeLabel.setBounds(47, 110, 150, 20);
                                 panel_2.add(arrivalTimeLabel);
                                 arrivalTimeLabel.setHorizontalAlignment(SwingConstants.CENTER);
                                 arrivalTimeLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                                arrivalTimeLabel.setText(flight.getVarisTarihi() + " " + flight.getVarisZamani());
+                                arrivalTimeLabel.setText(ticket.getFlight().getVarisTarihi() + " " + ticket.getFlight().getVarisZamani());
                                 
                                 JSeparator separator_1 = new JSeparator();
+                                separator_1.setBackground(new Color(0, 0, 0));
                                 separator_1.setBounds(242, 0, 2, 200);
                                 panel_2.add(separator_1);
                                 separator_1.setOrientation(SwingConstants.VERTICAL);
                                 separator_1.setForeground(Color.BLACK);
-                                separator_1.setBackground(Color.BLACK);
         
         JPanel panel_3 = new JPanel();
         panel.add(panel_3);
@@ -159,17 +117,39 @@ public class TicketBookingPane extends JFrame {
                 flightLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
                 
                         JLabel flightNumberLabel = new JLabel("UÇUŞ NO : ");
-                        flightNumberLabel.setBounds(32, 85, 180, 20);
+                        flightNumberLabel.setBounds(32, 80, 180, 20);
                         panel_3.add(flightNumberLabel);
                         flightNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
                         flightNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                        flightNumberLabel.setText(flightNumberLabel.getText() + " " + flight.getUcusNo());
+                        flightNumberLabel.setText(flightNumberLabel.getText() + " " + ticket.getFlight().getUcusNo());
                         
                                 JLabel planeNameLabel = new JLabel("UÇAK MODELİ : ");
-                                planeNameLabel.setBounds(12, 115, 220, 20);
+                                planeNameLabel.setBounds(12, 110, 220, 20);
                                 panel_3.add(planeNameLabel);
                                 planeNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
                                 planeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-                                planeNameLabel.setText(planeNameLabel.getText() + " " + flight.getUcak());
+                                planeNameLabel.setText(planeNameLabel.getText() + " " + ticket.getFlight().getUcak());
+                                
+                                JButton ticketDeleteButton = new JButton("BİLETİMİ İPTAL ET");
+                                ticketDeleteButton.setForeground(new Color(255, 255, 255));
+                                ticketDeleteButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
+                                ticketDeleteButton.setBackground(new Color(255, 0, 0));
+                                ticketDeleteButton.setBounds(493, 328, 229, 41);
+                                contentPane.add(ticketDeleteButton);
+                                
+                                JLabel lblPnr = new JLabel("PNR KODU :");
+                                lblPnr.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                                lblPnr.setHorizontalAlignment(SwingConstants.CENTER);
+                                lblPnr.setBounds(248, 336, 235, 29);
+                                lblPnr.setText(lblPnr.getText() + " " + ticket.getPnr());
+                                contentPane.add(lblPnr);
+                                
+                                JLabel lblKoltuk = new JLabel("KOLTUK : ");
+                                lblKoltuk.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                                lblKoltuk.setHorizontalAlignment(SwingConstants.CENTER);
+                                lblKoltuk.setBounds(10, 336, 235, 29);
+                                lblKoltuk.setText(lblKoltuk.getText() + " " + ticket.getSeat().getKoltuknumarasi());
+                                contentPane.add(lblKoltuk);
+        
     }
 }

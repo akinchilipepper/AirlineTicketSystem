@@ -24,7 +24,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.Ticket;
 import model.User;
+import operations.TicketOperations;
 import operations.UserOperations;
 
 public class UserLoginGUI extends JFrame {
@@ -124,7 +126,8 @@ public class UserLoginGUI extends JFrame {
                 if (isLoginSuccesful) {
                     JOptionPane.showMessageDialog(null, "Hoşgeldiniz");
                     User user = UserOperations.setUser(email);
-                    new MainGUI(user).setVisible(true);
+                    Ticket[] tickets = TicketOperations.getTickets(user); 
+                    new MainGUI(user, tickets).setVisible(true);
                     dispose();
                 } else {
                     attempts--;
@@ -186,8 +189,6 @@ public class UserLoginGUI extends JFrame {
 
         panelRight.add(registerLabel);
 
-        contentPane.add(panelLeft);
-
         JLabel lblCopyright = new JLabel("Copyright © 2024 Tüm Hakları Saklıdır");
         lblCopyright.setFont(new Font("Tahoma", Font.PLAIN, 16));
         lblCopyright.setForeground(new Color(255, 255, 255));
@@ -195,14 +196,7 @@ public class UserLoginGUI extends JFrame {
         lblCopyright.setBounds(85, 523, 279, 20);
         panelLeft.add(lblCopyright);
 
-        JButton btnNewButton = new JButton("");
-        btnNewButton.addActionListener((ActionEvent e) -> {
-            dispose();
-            new MainGUI(new User()).setVisible(true);
-        });
-        btnNewButton.setBackground(new Color(56, 56, 56));
-        btnNewButton.setBounds(10, 10, 85, 21);
-        panelLeft.add(btnNewButton);
+        contentPane.add(panelLeft);
         contentPane.add(panelRight);
 
         setContentPane(contentPane);
