@@ -24,7 +24,7 @@ import model.User;
 public class FlightsPane extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private final JTable table;
+    private JTable table;
     private JPanel contentPane;
     private Flight[] flights;
     private User user;

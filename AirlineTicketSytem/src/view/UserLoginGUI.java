@@ -32,17 +32,17 @@ import operations.UserOperations;
 public class UserLoginGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private final JPanel contentPane;
-    private final JPanel panelRight;
-    private final JLabel dateLabel;
-    private final JLabel timeLabel;
+    private JPanel contentPane;
+    private JPanel panelRight;
+    private JLabel dateLabel;
+    private JLabel timeLabel;
     private JLabel attemptLabel;
-    private final JLabel emailLabel;
-    private final JTextField emailField;
-    private final JLabel passwordLabel;
-    private final JPasswordField passwordField;
-    private final JButton confirmButton;
-    private final JPanel panelLeft;
+    private JLabel emailLabel;
+    private JTextField emailField;
+    private JLabel passwordLabel;
+    private JPasswordField passwordField;
+    private JButton confirmButton;
+    private JPanel panelLeft;
     private int attempts = 3;
 
     public UserLoginGUI() {
