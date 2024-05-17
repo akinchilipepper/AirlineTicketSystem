@@ -67,10 +67,34 @@ public class FlightOperations {
 
     }
     
+    public static String getFlightStatus(String flightNumber) {
+		String query = "SELECT D.UCUSDURUMU "
+				+ "FROM "
+				+ "UCUSLAR U "
+				+ "JOIN "
+				+ "DURUMLAR D ON D.ID = U.DURUMID "
+				+ "WHERE UCUSNO = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, flightNumber);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				String flightStatus = rs.getString(1);
+				return flightStatus;
+			} else {
+				return null;
+			}
+			
+		} catch(SQLException ex) {
+			Logger.getLogger(FlightOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+		}
+    }
+    
     public static Flight getFlight(int ucusid) {
     	String query = "SELECT "
                 + "UC.ID, "
-                + "HAT.YÖN, "
                 + "UCAK.MODEL, "
                 + "H1.HAVAALANI, "
                 + "H2.HAVAALANI, "
@@ -79,11 +103,10 @@ public class FlightOperations {
                 + "UC.KALKISZAMANI, "
                 + "UC.VARISZAMANI, "
                 + "D.UCUSDURUMU,"
-                + "UC.UCUSNO "
+                + "UC.UCUSNO, "
+                + "UC.BILETFIYATI  "
                 + "FROM "
                 + "UCUSLAR UC "
-                + "JOIN "
-                + "HATLAR HAT ON HAT.ID = UC.HATID "
                 + "JOIN "
                 + "UCAKLAR UCAK ON UCAK.ID = UC.UCAKID "
                 + "JOIN "
@@ -91,7 +114,7 @@ public class FlightOperations {
                 + "JOIN "
                 + "HAVAALANLARI H2 ON H2.ID = UC.VARISYERIID "
                 + "JOIN "
-                + "DURUMLAR D ON D.ID = UC.DURUMUID "
+                + "DURUMLAR D ON D.ID = UC.DURUMID "
                 + "WHERE "
                 + "UC.ID = ?";
     	Flight flight = null;
@@ -101,18 +124,19 @@ public class FlightOperations {
     		rs = ps.executeQuery();
     		while(rs.next()) {
     			int id = rs.getInt(1);
-                String hat = rs.getString(2);
-                String ucak = rs.getString(3);
-                String kalkisYeri = rs.getString(4);
-                String varisYeri = rs.getString(5);
-                String kalkisTarihi = rs.getString(6);
-                String varisTarihi = rs.getString(7);
-                String kalkisZamani = rs.getString(8);
-                String varisZamani = rs.getString(9);
-                String durum = rs.getString(10);
-                String ucusNo = rs.getString(11);
+                String ucak = rs.getString(2);
+                String kalkisYeri = rs.getString(3);
+                String varisYeri = rs.getString(4);
+                String kalkisTarihi = rs.getString(5);
+                String varisTarihi = rs.getString(6);
+                String kalkisZamani = rs.getString(7);
+                String varisZamani = rs.getString(8);
+                String durum = rs.getString(9);
+                String ucusNo = rs.getString(10);
+                int biletFiyati = rs.getInt(11);
 
-                flight = new Flight(id, hat, ucak, kalkisYeri, varisYeri, kalkisTarihi, varisTarihi, kalkisZamani, varisZamani, durum, ucusNo);
+                flight = new Flight(id, ucak, kalkisYeri, varisYeri, kalkisTarihi, varisTarihi, 
+                		kalkisZamani, varisZamani, durum, ucusNo, biletFiyati);
     		}
     		return flight;
     	} catch(SQLException ex) {
@@ -131,7 +155,6 @@ public class FlightOperations {
         
         String query = "SELECT "
                 + "UC.ID, "
-                + "HAT.YÖN, "
                 + "UCAK.MODEL, "
                 + "H1.HAVAALANI, "
                 + "H2.HAVAALANI, "
@@ -140,11 +163,10 @@ public class FlightOperations {
                 + "UC.KALKISZAMANI, "
                 + "UC.VARISZAMANI, "
                 + "D.UCUSDURUMU,"
-                + "UC.UCUSNO "
+                + "UC.UCUSNO, "
+                + "UC.BILETFIYATI "
                 + "FROM "
                 + "UCUSLAR UC "
-                + "JOIN "
-                + "HATLAR HAT ON HAT.ID = UC.HATID "
                 + "JOIN "
                 + "UCAKLAR UCAK ON UCAK.ID = UC.UCAKID "
                 + "JOIN "
@@ -152,7 +174,7 @@ public class FlightOperations {
                 + "JOIN "
                 + "HAVAALANLARI H2 ON H2.ID = UC.VARISYERIID "
                 + "JOIN "
-                + "DURUMLAR D ON D.ID = UC.DURUMUID "
+                + "DURUMLAR D ON D.ID = UC.DURUMID "
                 + "WHERE "
                 + "UC.KALKISYERIID = ? "
                 + "AND UC.VARISYERIID = ? "
@@ -183,18 +205,19 @@ public class FlightOperations {
 
             while (rs.next()) {
                 int id = rs.getInt(1);
-                String hat = rs.getString(2);
-                String ucak = rs.getString(3);
-                String kalkisYeri = rs.getString(4);
-                String varisYeri = rs.getString(5);
-                String kalkisTarihi = rs.getString(6);
-                String varisTarihi = rs.getString(7);
-                String kalkisZamani = rs.getString(8);
-                String varisZamani = rs.getString(9);
-                String durum = rs.getString(10);
-                String ucusNo = rs.getString(11);
+                String ucak = rs.getString(2);
+                String kalkisYeri = rs.getString(3);
+                String varisYeri = rs.getString(4);
+                String kalkisTarihi = rs.getString(5);
+                String varisTarihi = rs.getString(6);
+                String kalkisZamani = rs.getString(7);
+                String varisZamani = rs.getString(8);
+                String durum = rs.getString(9);
+                String ucusNo = rs.getString(10);
+                int biletFiyati = rs.getInt(11);
 
-                Flight flight = new Flight(id, hat, ucak, kalkisYeri, varisYeri, kalkisTarihi, varisTarihi, kalkisZamani, varisZamani, durum, ucusNo);
+                Flight flight = new Flight(id, ucak, kalkisYeri, varisYeri, kalkisTarihi, 
+                		varisTarihi, kalkisZamani, varisZamani, durum, ucusNo, biletFiyati);
 
                 flightList.add(flight);
             }
@@ -207,5 +230,4 @@ public class FlightOperations {
             return null;
         }
     }
-
 }

@@ -8,8 +8,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Flight;
-import model.Seat;
 import model.User;
 import system.DBConnection;
 
@@ -42,9 +40,6 @@ public class UserOperations {
 		String query = "INSERT INTO YOLCULAR" + "(AD, SOYAD, TELNO, E_POSTA, CINSIYET, DOGUMTARIHI, PAROLA)" + "VALUES"
 				+ "(?, ?, ?, ?, ?, ?, ?)";
 		try {
-
-			con = conn.connDb();
-
 			ps = con.prepareStatement(query);
 			ps.setString(1, ad);
 			ps.setString(2, soyad);
@@ -91,7 +86,7 @@ public class UserOperations {
 		}
 	}
 
-	private static String generateRandomUniquePNR() throws SQLException {
+	public static String generateRandomUniquePNR() throws SQLException {
 		String pnr;
 		String sql = "SELECT COUNT(*) FROM BILETLER WHERE PNR = ?";
 		try {
@@ -118,50 +113,6 @@ public class UserOperations {
             return null;
 		}
 	}
-
-	public static boolean ticketBooking(Flight flight, User user, Seat seat) {
-		String findIdQuery = "SELECT ID FROM KOLTUKLAR WHERE KOLTUKNUMARASI = ?";
-        String insertTicketQuery = "INSERT INTO BILETLER (YOLCUID, UCUSID, KOLTUKID, PNR)"
-                + "VALUES (?,?,?,?)";
-        String setReservedSeat = "UPDATE KOLTUKLAR SET REZERVEDURUMU = 1 WHERE KOLTUKNUMARASI = ?";
-        String pnr;
-        Boolean durum = SeatOperations.isSeatAvailable(seat.getKoltuknumarasi());
-        if(durum) {
-        	try {
-                pnr = UserOperations.generateRandomUniquePNR();
-            } catch (SQLException e) {
-                Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, e);
-                pnr = null;
-            }
-            try {
-            	ps = con.prepareStatement(findIdQuery);
-            	ps.setString(1, seat.getKoltuknumarasi());
-            	rs = ps.executeQuery();
-            	int koltukId = -1;
-            	if(rs.next()) {
-            		koltukId = rs.getInt("ID");
-            	}
-            	
-            	ps = con.prepareStatement(insertTicketQuery);
-                ps.setInt(1, user.getId());
-                ps.setInt(2, flight.getId());
-                ps.setInt(3, koltukId);
-                ps.setString(4, pnr);
-                ps.executeUpdate();
-            	
-                ps = con.prepareStatement(setReservedSeat);
-                ps.setString(1, seat.getKoltuknumarasi());
-                ps.executeUpdate();
-                
-                return true;
-            } catch (SQLException ex) {
-                Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
-        } else {
-        	return false;
-        }
-    }
 
 	public static boolean mailCheck(String eposta) {
 		String sorgu = "SELECT * FROM YOLCULAR WHERE E_POSTA = ?";

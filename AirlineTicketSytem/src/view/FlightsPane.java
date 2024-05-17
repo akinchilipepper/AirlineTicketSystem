@@ -28,10 +28,12 @@ public class FlightsPane extends JFrame {
     private JPanel contentPane;
     private Flight[] flights;
     private User user;
+    private MainGUI mainGUI;
 
-    public FlightsPane(Flight[] flights, User user) {
+    public FlightsPane(Flight[] flights, User user, MainGUI mainGUI) {
         this.flights = flights;
         this.user = user;
+        this.mainGUI = mainGUI;
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -139,8 +141,7 @@ public class FlightsPane extends JFrame {
         public Object getCellEditorValue() {
             if (isPushed) {
                 int selectedRow = table.getSelectedRow();
-                new TicketBookingPane(flights[selectedRow], user).setVisible(true);
-
+                new TicketBookingPane(flights[selectedRow], user, mainGUI).setVisible(true);
             }
             isPushed = false;
             return label;

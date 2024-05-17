@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 
@@ -11,15 +12,19 @@ import java.awt.Font;
 import java.awt.Color;
 
 import model.Ticket;
+import operations.TicketOperations;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TicketInfoPane extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
 
-    public TicketInfoPane(Ticket ticket) {
+    public TicketInfoPane(Ticket ticket, MainGUI mainGUI) {
     	setTitle("Biletim");
 
         setResizable(false);
@@ -131,6 +136,19 @@ public class TicketInfoPane extends JFrame {
                                 planeNameLabel.setText(planeNameLabel.getText() + " " + ticket.getFlight().getUcak());
                                 
                                 JButton ticketDeleteButton = new JButton("BİLETİMİ İPTAL ET");
+                                ticketDeleteButton.addActionListener(new ActionListener() {
+                                	public void actionPerformed(ActionEvent e) {
+                                		int choice = JOptionPane.showConfirmDialog(null, "Biletinizi iptal etmek istediğinize emin misiniz?");
+                                		if(choice == 0) {
+                                			TicketOperations.deleteTicket(ticket);
+                                			mainGUI.setTicketsTableModel();
+                                			mainGUI.validate();
+                                			mainGUI.repaint();
+                                			JOptionPane.showMessageDialog(null, "Biletiniz silindi");
+                                			dispose();
+                                		}
+                                	}
+                                });
                                 ticketDeleteButton.setForeground(new Color(255, 255, 255));
                                 ticketDeleteButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
                                 ticketDeleteButton.setBackground(new Color(255, 0, 0));

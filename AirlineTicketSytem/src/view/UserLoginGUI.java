@@ -24,9 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.Ticket;
 import model.User;
-import operations.TicketOperations;
 import operations.UserOperations;
 
 public class UserLoginGUI extends JFrame {
@@ -125,9 +123,8 @@ public class UserLoginGUI extends JFrame {
                 Boolean isLoginSuccesful = UserOperations.login(email, password);
                 if (isLoginSuccesful) {
                     JOptionPane.showMessageDialog(null, "Hoşgeldiniz");
-                    User user = UserOperations.setUser(email);
-                    Ticket[] tickets = TicketOperations.getTickets(user); 
-                    new MainGUI(user, tickets).setVisible(true);
+                    User user = UserOperations.setUser(email); 
+                    new MainGUI(user).setVisible(true);
                     dispose();
                 } else {
                     attempts--;

@@ -40,6 +40,9 @@ import model.Airport;
 
 import operations.AirportOperations;
 import operations.FlightOperations;
+import operations.TicketOperations;
+
+import java.awt.event.ActionListener;
 
 public class MainGUI extends JFrame {
 
@@ -59,10 +62,13 @@ public class MainGUI extends JFrame {
     private JLayeredPane layeredPane = null;
     private DateChooser chDate;
     private JTextField txtDate;
+    private JTextField flightNumberField;
+    private User user;
     private Ticket[] tickets;
 
-    public MainGUI(User user, Ticket[] tickets) {
-    	this.tickets = tickets;
+    public MainGUI(User user) {
+    	
+    	this.user = user;
     	
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,7 +106,7 @@ public class MainGUI extends JFrame {
 
         checkInButton = new JButton("Biletlerim");
         checkInButton.setBackground(new Color(255, 255, 255));
-        checkInButton.setBounds(112, 490, 275, 35);
+        checkInButton.setBounds(112, 500, 275, 35);
         checkInButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         checkInButton.addActionListener((ActionEvent e) -> {
             layeredPane.removeAll();
@@ -112,7 +118,7 @@ public class MainGUI extends JFrame {
 
         flightStatusButton = new JButton("Uçuş Durumu");
         flightStatusButton.setBackground(new Color(255, 255, 255));
-        flightStatusButton.setBounds(112, 540, 275, 35);
+        flightStatusButton.setBounds(112, 560, 275, 35);
         flightStatusButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         flightStatusButton.addActionListener((ActionEvent e) -> {
             layeredPane.removeAll();
@@ -124,7 +130,7 @@ public class MainGUI extends JFrame {
 
         userInfoButton = new JButton("Kullanıcı Bilgileri");
         userInfoButton.setBackground(new Color(255, 255, 255));
-        userInfoButton.setBounds(112, 590, 275, 35);
+        userInfoButton.setBounds(112, 620, 275, 35);
         userInfoButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
         userInfoButton.addActionListener((ActionEvent e) -> {
             layeredPane.removeAll();
@@ -166,7 +172,7 @@ public class MainGUI extends JFrame {
         ticketBookingPane.setBackground(new Color(255, 255, 255));
 
         flightStatusPane = new JPanel();
-        flightStatusPane.setBackground(new Color(0, 128, 255));
+        flightStatusPane.setBackground(new Color(255, 255, 255));
         flightStatusPane.setLayout(null);
 
         userTicketsPane = new JPanel();
@@ -246,7 +252,7 @@ public class MainGUI extends JFrame {
 
             if (isFlightFound) {
                 Flight[] flights = FlightOperations.getFlights(source, arrival, time);
-                new FlightsPane(flights, user).setVisible(true);
+                new FlightsPane(flights, user, this).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Aradığınız Kriterde Uçuş Bulunamadı");
             }
@@ -263,33 +269,15 @@ public class MainGUI extends JFrame {
         //---------------------------------------- MY TICKETS PAGE ----------------------------------------------
         layeredPane.setLayer(userTicketsPane, 2);
         
-        Object[][] objects = new Object[tickets.length][4];
         
-        for(int i = 0; i < tickets.length; i++) {
-        	objects[i][0] = tickets[i].getFlight().getKalkisyeri();
-        	objects[i][1] = tickets[i].getFlight().getVarisyeri();
-        	objects[i][2] = tickets[i].getFlight().getKalkisTarihi();
-        }
-        
-        String[] columnNames = {"Kalkış","Varış","Kalkış Tarihi","Biletimi Görüntüle"};
-        DefaultTableModel model = new DefaultTableModel(objects,columnNames) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return column == 3;
-			}
-        	
-        };
-        
-        table = new JTable(model);
-        table.getColumn("Biletimi Görüntüle").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Biletimi Görüntüle").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table = new JTable();
         table.setFont(new Font("Tahoma", Font.PLAIN, 14));
         table.setRowHeight(30);
         
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 17));
+        
+        setTicketsTableModel();
         
         JScrollPane ticketsScrollPane = new JScrollPane(table);
         ticketsScrollPane.setBounds(11, 308, 660, 435);
@@ -304,6 +292,34 @@ public class MainGUI extends JFrame {
         
         
         layeredPane.setLayer(flightStatusPane, 3);
+        
+        JLabel flightQueryLabel = new JLabel("UÇUŞ SORGULAMA");
+        flightQueryLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        flightQueryLabel.setBounds(258, 137, 167, 25);
+        flightStatusPane.add(flightQueryLabel);
+        
+        JLabel flightNumberLabel = new JLabel("UÇUŞ NUMARASI");
+        flightNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        flightNumberLabel.setBounds(268, 295, 139, 25);
+        flightStatusPane.add(flightNumberLabel);
+        
+        flightNumberField = new JTextField();
+        flightNumberField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        flightNumberField.setBounds(204, 330, 275, 35);
+        flightStatusPane.add(flightNumberField);
+        flightNumberField.setColumns(10);
+        
+        JButton flightQueryButton = new JButton("SORGULA");
+        flightQueryButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String flightNumber = flightNumberField.getText();
+        		String flightStatus = FlightOperations.getFlightStatus(flightNumber);
+        		JOptionPane.showMessageDialog(null, flightStatus);
+        	}
+        });
+        flightQueryButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        flightQueryButton.setBounds(216, 579, 250, 35);
+        flightStatusPane.add(flightQueryButton);
         layeredPane.setLayer(userInfoPane, 4);
 
         contentPane.add(panel_1);
@@ -366,7 +382,7 @@ public class MainGUI extends JFrame {
         public Object getCellEditorValue() {
             if (isPushed) {
             	int selectedRow = table.getSelectedRow();
-                new TicketInfoPane(tickets[selectedRow]).setVisible(true);
+                new TicketInfoPane(tickets[selectedRow], MainGUI.this).setVisible(true);
             }
             isPushed = false;
             return label;
@@ -382,5 +398,32 @@ public class MainGUI extends JFrame {
         protected void fireEditingStopped() {
             super.fireEditingStopped();
         }
+    }
+    
+    public void setTicketsTableModel(){
+    	tickets = TicketOperations.getTickets(user);
+    	
+    	Object[][] objects = new Object[tickets.length][4];
+        
+        for(int i = 0; i < tickets.length; i++) {
+        	objects[i][0] = tickets[i].getFlight().getKalkisyeri();
+        	objects[i][1] = tickets[i].getFlight().getVarisyeri();
+        	objects[i][2] = tickets[i].getFlight().getKalkisTarihi();
+        }
+        
+        String[] columnNames = {"Kalkış","Varış","Kalkış Tarihi","Biletimi Görüntüle"};
+        DefaultTableModel model = new DefaultTableModel(objects, columnNames) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return column == 3;
+			}
+        	
+        };
+        
+        table.setModel(model);
+        table.getColumn("Biletimi Görüntüle").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Biletimi Görüntüle").setCellEditor(new ButtonEditor(new JCheckBox()));
     }
 }
