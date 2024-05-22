@@ -21,7 +21,7 @@ public class TicketOperations {
     private static ResultSet rs = null;
     
     public static Ticket[] getTickets(User user) {
-    	String query = "SELECT ID, UCUSID, KOLTUKID, PNR FROM BILETLER WHERE YOLCUID = ?";
+    	String query = "SELECT ID, UCUSID, KOLTUKID, PNR, UCRET FROM BILETLER WHERE YOLCUID = ?";
     	try {
     		ps = con.prepareStatement(query);
     		ps.setInt(1, user.getId());
@@ -32,11 +32,12 @@ public class TicketOperations {
     			int ucusId = rs.getInt(2);
     			int koltukId = rs.getInt(3);
     			String pnr = rs.getString(4);
+    			double ucret = rs.getInt(5);
     			
     			Flight flight = FlightOperations.getFlight(ucusId);
     			Seat seat = SeatOperations.getSeat(flight, koltukId);
     			
-    			Ticket ticket = new Ticket(id, pnr, user, flight, seat);
+    			Ticket ticket = new Ticket(id, pnr, user, flight, seat, ucret);
     			ticketList.add(ticket);
     		}
     		
@@ -52,7 +53,8 @@ public class TicketOperations {
     public static boolean deleteTicket(Ticket ticket) {
     	String deleteTicketQuery = "DELETE FROM BILETLER WHERE ID = ?";
     	String deleteUserFromFlightQuery = "DELETE FROM UCUSYOLCU WHERE UCUSID = ? AND YOLCUID = ?";
-    	String setReservedSeatFalseQuery = "UPDATE KOLTUKLAR SET REZERVEDURUMU = 0 WHERE ID = ?";
+    	String setReservedSeatFalseQuery = "UPDATE KOLTUKLAR SET REZERVEDURUMU = 0 "
+    			+ "WHERE UCUSID = ? AND KOLTUKNUMARASI = ?";
     	try {
     		ps = con.prepareStatement(deleteTicketQuery);
     		ps.setInt(1, ticket.getId());
@@ -64,7 +66,8 @@ public class TicketOperations {
     		int deleteUserFromFlightResult = ps.executeUpdate();
     		
     		ps = con.prepareStatement(setReservedSeatFalseQuery);
-    		ps.setInt(1, ticket.getSeat().getId());
+    		ps.setInt(1, ticket.getSeat().getFlight().getId());
+    		ps.setString(2, ticket.getSeat().getKoltuknumarasi());
     		int setReservedSeatFalseResult = ps.executeUpdate();
     		
     		return (deleteTicketResult > 0) && (deleteUserFromFlightResult > 0) && (setReservedSeatFalseResult > 0);
@@ -75,8 +78,8 @@ public class TicketOperations {
     }
     
     public static boolean ticketBooking(Flight flight, User user, Seat seat) {
-        String insertTicketQuery = "INSERT INTO BILETLER (YOLCUID, UCUSID, KOLTUKID, PNR)"
-                + "VALUES (?,?,?,?)";
+        String insertTicketQuery = "INSERT INTO BILETLER (YOLCUID, UCUSID, KOLTUKID, PNR, UCRET)"
+                + "VALUES (?,?,?,?,?)";
         String insertUserToFlight = "INSERT INTO UCUSYOLCU (UCUSID, YOLCUID) VALUES (?, ?)";
         String setReservedSeat = "UPDATE KOLTUKLAR SET REZERVEDURUMU = 1 WHERE ID = ?";
         String pnr;
@@ -94,6 +97,7 @@ public class TicketOperations {
                 ps.setInt(2, flight.getId());
                 ps.setInt(3, seat.getId());
                 ps.setString(4, pnr);
+                ps.setInt(5, flight.getBiletFiyati());
                 int insertTicketResult = ps.executeUpdate();
                 
                 ps = con.prepareStatement(insertUserToFlight);

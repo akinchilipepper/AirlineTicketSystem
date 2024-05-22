@@ -23,12 +23,10 @@ public class AirportOperations {
                 + "H.ID, "
                 + "S.SEHIR, "
                 + "H.HAVAALANI, "
-                + "H.IATAKODU, "
-                + "K.KULLANIM "
+                + "H.IATAKODU "
                 + "FROM "
                 + "HAVAALANLARI H "
                 + "JOIN SEHIRLER S ON S.ID = H.SEHIRID "
-                + "JOIN HAVAALANIKULLANIM K ON K.ID = H.KULLANIMID "
                 + "ORDER BY ID";
         try {
             ArrayList<Airport> airportList = new ArrayList<>();
@@ -40,8 +38,7 @@ public class AirportOperations {
                 String sehir = rs.getString(2);
                 String havaalani = rs.getString(3);
                 String iatakodu = rs.getString(4);
-                String kullanim = rs.getString(5);
-                Airport airport = new Airport(id, sehir, havaalani, iatakodu, kullanim);
+                Airport airport = new Airport(id, sehir, havaalani, iatakodu);
                 airportList.add(airport);
             }
 

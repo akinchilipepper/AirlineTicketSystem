@@ -126,4 +126,46 @@ public class UserOperations {
 			return false;
 		}
 	}
+	
+	public static boolean updateTelNumber(User user, String telNumber) {
+		String query = "UPDATE YOLCULAR SET TELNO = ? WHERE ID = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, telNumber);
+			ps.setInt(2, user.getId());
+			int result = ps.executeUpdate();			
+			return result > 0;
+		} catch (SQLException ex) {
+			Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}
+	}
+	
+	public static boolean updateMail(User user, String mail) {
+		String query = "UPDATE YOLCULAR SET E_POSTA = ? WHERE ID = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, mail);
+			ps.setInt(2, user.getId());
+			int result = ps.executeUpdate();			
+			return result > 0;
+		} catch (SQLException ex) {
+			Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}
+	}
+	
+	public static boolean updatePassword(User user, String password) {
+		String query = "UPDATE YOLCULAR SET PAROLA = ? WHERE ID = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, password);
+			ps.setInt(2, user.getId());
+			int result = ps.executeUpdate();			
+			return result > 0;
+		} catch (SQLException ex) {
+			Logger.getLogger(UserOperations.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}
+	}
 }

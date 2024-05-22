@@ -7,14 +7,16 @@ public class Ticket {
     private User user;
     private Flight flight;
     private Seat seat;
+    private double ucret;
 
-    public Ticket(int id, String pnr, User user, Flight flight, Seat seat) {
+    public Ticket(int id, String pnr, User user, Flight flight, Seat seat, double ucret) {
         super();
         this.id = id;
         this.pnr = pnr;
         this.user = user;
         this.flight = flight;
         this.seat = seat;
+        this.ucret = ucret;
     }
     
     public Ticket() {
@@ -61,4 +63,11 @@ public class Ticket {
         this.seat = seat;
     }
 
+	public double getUcret() {
+		return ucret;
+	}
+
+	public void setUcret(double ucret) {
+		this.ucret = ucret;
+	}
 }

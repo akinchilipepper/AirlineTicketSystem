@@ -140,12 +140,16 @@ public class TicketInfoPane extends JFrame {
                                 	public void actionPerformed(ActionEvent e) {
                                 		int choice = JOptionPane.showConfirmDialog(null, "Biletinizi iptal etmek istediğinize emin misiniz?");
                                 		if(choice == 0) {
-                                			TicketOperations.deleteTicket(ticket);
-                                			mainGUI.setTicketsTableModel();
-                                			mainGUI.validate();
-                                			mainGUI.repaint();
-                                			JOptionPane.showMessageDialog(null, "Biletiniz silindi");
-                                			dispose();
+                                			boolean result = TicketOperations.deleteTicket(ticket);
+                                			if(result) {
+                                				mainGUI.setTicketsTableModel();
+                                    			mainGUI.validate();
+                                    			mainGUI.repaint();
+                                    			JOptionPane.showMessageDialog(null, "Biletiniz silindi.");
+                                    			dispose();
+                                			} else {
+                                				JOptionPane.showMessageDialog(null, "Biletiniz silinirken bir hata oluştu.");
+                                			}
                                 		}
                                 	}
                                 });

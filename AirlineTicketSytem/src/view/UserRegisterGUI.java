@@ -187,9 +187,19 @@ public class UserRegisterGUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Lütfen tüm alanları doldurunuz!");
                 return;
             }
-
+            
             if (!password.equals(passwordRep)) {
                 JOptionPane.showMessageDialog(null, "Parolalar eşleşmiyor! Lütfen kontrol ediniz");
+                return;
+            }
+            
+            if(password.length() < 8) {
+            	JOptionPane.showMessageDialog(null, "Parola uzunluğu en az 8 karakter olmalı");
+                return;
+            }
+            
+            if(!mailField.getText().contains("@gmail.com")) {
+            	JOptionPane.showMessageDialog(null, "Lütfen e-Postanızı doğru formatta giriniz");
                 return;
             }
 

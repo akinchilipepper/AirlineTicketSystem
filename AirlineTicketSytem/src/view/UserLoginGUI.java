@@ -119,6 +119,10 @@ public class UserLoginGUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "E-Posta alanı boş olamaz!");
             } else if (password.equals("")) {
                 JOptionPane.showMessageDialog(null, "Parola alanı boş olamaz!");
+            } else if(!email.contains("@gmail.com")) {
+            	JOptionPane.showMessageDialog(null, "e-Postanızı doğru formatta giriniz");
+            	emailField.setText("");
+                passwordField.setText("");
             } else {
                 Boolean isLoginSuccesful = UserOperations.login(email, password);
                 if (isLoginSuccesful) {
