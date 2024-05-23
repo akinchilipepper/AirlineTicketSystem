@@ -15,6 +15,9 @@ import model.Ticket;
 import operations.TicketOperations;
 
 import java.awt.GridLayout;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,8 +28,9 @@ public class TicketInfoPane extends JFrame {
     private JPanel contentPane;
 
     public TicketInfoPane(Ticket ticket, MainGUI mainGUI) {
+    	Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
     	setTitle("Biletim");
-
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 750, 450);

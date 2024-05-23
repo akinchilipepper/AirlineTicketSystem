@@ -44,10 +44,13 @@ public class UserLoginGUI extends JFrame {
     private int attempts = 3;
 
     public UserLoginGUI() {
+    	Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 600);
         setLocationRelativeTo(null);
+        setTitle("Flaai");
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

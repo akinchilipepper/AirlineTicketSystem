@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
@@ -22,6 +23,7 @@ import operations.SeatOperations;
 import operations.TicketOperations;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 
 public class TicketBookingPane extends JFrame {
 
@@ -30,9 +32,13 @@ public class TicketBookingPane extends JFrame {
 	
 
 	public TicketBookingPane(Flight flight, User user, MainGUI mainGUI) {
+		Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
+		setTitle("Bilet Rezervasyonu");
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setForeground(new Color(255, 255, 255));

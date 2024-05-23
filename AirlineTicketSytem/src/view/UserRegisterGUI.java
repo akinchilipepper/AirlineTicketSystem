@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
@@ -49,10 +51,13 @@ public class UserRegisterGUI extends JFrame {
     private JRadioButton femaleRadioButton;
 
     public UserRegisterGUI() {
+    	Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 600);
         setLocationRelativeTo(null);
+        setTitle("Kayıt Ol");
 
         contentPane = new JPanel();
         contentPane.setBackground(new Color(38, 38, 38));

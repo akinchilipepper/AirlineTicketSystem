@@ -2,9 +2,11 @@ package view;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -34,10 +36,13 @@ public class FlightsPane extends JFrame {
         this.flights = flights;
         this.user = user;
         this.mainGUI = mainGUI;
-
+        Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 950, 600);
+        setTitle("Uçuşlar");
+        
         contentPane = new JPanel();
         contentPane.setBackground(new Color(38, 38, 38));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

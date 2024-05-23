@@ -91,10 +91,13 @@ public class MainGUI extends JFrame {
     	
     	this.user = user;
     	
+    	Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
+    	setIconImage(appIcon);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 800);
         setLocationRelativeTo(null);
+        setTitle("Flaai");
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -331,6 +334,8 @@ public class MainGUI extends JFrame {
         flightNumberField.setColumns(10);
         
         JButton flightQueryButton = new JButton("SORGULA");
+        flightQueryButton.setForeground(new Color(255, 255, 255));
+        flightQueryButton.setBackground(new Color(38, 38, 38));
         flightQueryButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String flightNumber = flightNumberField.getText();
