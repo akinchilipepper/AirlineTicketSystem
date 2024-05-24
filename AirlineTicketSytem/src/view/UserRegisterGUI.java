@@ -203,7 +203,7 @@ public class UserRegisterGUI extends JFrame {
                 return;
             }
             
-            if(!mailField.getText().contains("@gmail.com")) {
+            if(!mailField.getText().contains("@gmail.com") && !mailField.getText().contains("@icloud.com") && !mailField.getText().contains("@hotmail.com")) {
             	JOptionPane.showMessageDialog(null, "Lütfen e-Postanızı doğru formatta giriniz");
                 return;
             }
