@@ -42,6 +42,7 @@ public class UserLoginGUI extends JFrame {
     private JButton confirmButton;
     private JPanel panelLeft;
     private int attempts = 3;
+    private JLabel designerInfoLabel;
 
     public UserLoginGUI() {
     	Image appIcon = new ImageIcon(this.getClass().getResource("/images/appIconPlane.png")).getImage();
@@ -201,6 +202,18 @@ public class UserLoginGUI extends JFrame {
         panelLeft.add(lblCopyright);
 
         contentPane.add(panelLeft);
+        
+        designerInfoLabel = new JLabel("Tasarımcı");
+        designerInfoLabel.setBounds(10, 10, 56, 13);
+        panelLeft.add(designerInfoLabel);
+        designerInfoLabel.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		new DesignerInfoGUI().setVisible(true);
+        	}
+        });
+        designerInfoLabel.setForeground(new Color(255, 255, 255));
+        designerInfoLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         contentPane.add(panelRight);
 
         setContentPane(contentPane);

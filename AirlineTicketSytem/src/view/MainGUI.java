@@ -340,7 +340,11 @@ public class MainGUI extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		String flightNumber = flightNumberField.getText();
         		String flightStatus = FlightOperations.getFlightStatus(flightNumber);
-        		JOptionPane.showMessageDialog(null, flightStatus);
+        		if(flightStatus != null) {
+        			JOptionPane.showMessageDialog(null, flightStatus);
+        		} else {
+        			JOptionPane.showMessageDialog(null, "Uçuş bulunamadı");
+        		}
         	}
         });
         flightQueryButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
