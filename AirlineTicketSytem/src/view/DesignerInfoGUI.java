@@ -29,22 +29,39 @@ public class DesignerInfoGUI extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Adı: Muhammed Musa");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setBounds(179, 52, 175, 30);
+		lblNewLabel.setBounds(27, 51, 175, 30);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblSoyadAkn = new JLabel("Soyadı: Akın");
 		lblSoyadAkn.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblSoyadAkn.setBounds(179, 92, 175, 30);
+		lblSoyadAkn.setBounds(27, 81, 175, 30);
 		contentPane.add(lblSoyadAkn);
 		
 		JLabel lblNewLabel_3 = new JLabel("Numarası: 22612014");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_3.setBounds(179, 132, 175, 30);
+		lblNewLabel_3.setBounds(27, 111, 175, 30);
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Bölümü: Bilgisayar Programcılığı");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_4.setBounds(179, 172, 200, 30);
+		lblNewLabel_4.setBounds(27, 141, 200, 30);
 		contentPane.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_1 = new JLabel("e-Postası: musaakin890@gmail.com");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_1.setBounds(27, 171, 233, 30);
+		contentPane.add(lblNewLabel_1);
+		
+		ImageIcon originalIcon = new ImageIcon(UserLoginGUI.class.getResource("/images/student.png"));
+
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2.setIcon(resizedIcon);
+		lblNewLabel_2.setBounds(336, 39, 175, 176);
+		contentPane.add(lblNewLabel_2);
 	}
 }
