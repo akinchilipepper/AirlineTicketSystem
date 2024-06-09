@@ -107,7 +107,7 @@ public class UserRegisterGUI extends JFrame {
         telNumberField.setBounds(522, 226, 228, 27);
         contentPane.add(telNumberField);
 
-        telnumberLabel = new JLabel("TELEFON NUMARA");
+        telnumberLabel = new JLabel("TELEFON NUMARASI");
         telnumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 19));
         telnumberLabel.setForeground(new Color(255, 255, 255));
         telnumberLabel.setBounds(522, 201, 193, 21);
